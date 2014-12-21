@@ -52,6 +52,30 @@
 			}, this);
 			console.log(this.datasets);
 		},
+		draw: function(ease) {
+			var easingDecimal = ease || 1;
+			this.clear();
+
+			var ctx = this.chart.ctx;
+
+			this.scale.draw(easingDecimal);
+
+			helpers.each(this.datasets,function(dataset,datasetIndex) {
+				helpers.each(dataset.bars,function(bar,index) {
+					if (bar.hasValue()) {
+						bar.transition({
+							x : this.scale.calculateBarX(this.datasets.length, datasetIndex, index),
+							width : this.scale.calculateBarWidth(this.datasets.length)
+							yMin : this.scale.calculateY(bar.min),
+							yQ1 : this.scale.calculateY(bar.q1);
+							y : this.scale.calculateY(bar.value);
+							yQ3 : this.scale.calculateY(bar.q3);
+							yMax : this.scale.calculateY(bar.max);
+						}, easingDecimal).draw();
+					}
+				});
+			});
+		},
 	});
 
 

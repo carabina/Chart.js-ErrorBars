@@ -37,32 +37,3 @@
 	})
 }).call(this);	
 
-/*
-//mathematical funcitons for handling error bars
-average = helpers.average = function( data ) {
-	//calculate the average value 
-	var sum = 0;
-	for (var x = 0; x < data.length; x++) {
-		sum = sum + data[x];
-	}
-	return sum / data.length;
-},
-range = helpers.range = function(data) {
-	//calculate the range of the data 
-	//(the difference between the maximum and average value) 
-	data.sort(function(a, b){return a - b}); //sorts highest to lowest
-	var maximum = data[data.length - 1];
-	return maximum - helpers.average(data);
-},
-stdev = helpers.stdev = function(data) {
-	//return the standard deviation of an array of numbers
-	var sum = 0;
-	for (var x = 0; x < data.length; x++) {
-		sum = sum + Math.pow(data[x] - helpers.average(data), 2);
-	}
-	return Math.sqrt(sum / (data.length - 1));
-},
-stderr = helpers.stderr = function(data) {
-	return helpers.stdev(data) / Math.sqrt(data.length);
-};
-*/
