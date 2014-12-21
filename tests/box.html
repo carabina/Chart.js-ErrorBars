@@ -1,0 +1,59 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Box plot</title>
+		<script src="../src/Chart.Core.js"></script>
+		<script src="../src/Chart.Stem.js"></script>
+		<script src="../src/Chart.Bar.js"></script>
+		<script src="../src/Chart.Box.js"></script>
+		<meta name = "viewport" content = "initial-scale = 1, user-scalable = no">
+	</head>
+	<body>
+		<div style="width: 50%">
+			<canvas id="canvas" height="450" width="600"></canvas>
+		</div>
+
+
+	<script>
+	var randomScalingFactor = function(){ return Math.round(Math.random()*100)};
+
+
+
+	var boxPlotData = {
+		labels : ["January","February","March","April","May","June","July"],
+		datasets : [
+			{
+				fillColor : "rgba(220,220,220,0.5)",
+				strokeColor : "rgba(220,220,220,0.8)",
+				highlightFill: "rgba(220,220,220,0.75)",
+				highlightStroke: "rgba(220,220,220,1)",
+				data : [10, 20, 30, 40, 50, 60, 70],
+				min  : [2,   4,  6,  8, 10, 12, 14],
+				q1 :   [5,  10, 20, 30, 35, 40, 50],
+				q3 :   [20, 30, 40, 50, 60, 70, 80],
+				max :  [35, 45, 55, 65, 75, 85, 95]
+			},
+			{
+				fillColor : "rgba(151,187,205,0.5)",
+				strokeColor : "rgba(151,187,205,0.8)",
+				highlightFill : "rgba(151,187,205,0.75)",
+				highlightStroke : "rgba(151,187,205,1)",
+				data : [10, 20, 30, 40, 50, 60, 70],
+				min  : [2,   4,  6,  8, 10, 12, 14],
+				q1 :   [5,  10, 20, 30, 35, 40, 50],
+				q3 :   [20, 30, 40, 50, 60, 70, 80],
+				max :  [35, 45, 55, 65, 75, 85, 95]
+			}
+		]
+
+	}
+	window.onload = function(){
+		var ctx = document.getElementById("canvas").getContext("2d");
+		window.myBox = new Chart(ctx).Box(boxPlotData, {
+			responsive : true
+		});
+	}
+	</script>
+	
+	</body>
+</html>
