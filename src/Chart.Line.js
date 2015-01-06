@@ -153,8 +153,7 @@
 						helpers.extend(point.errorBar, {
 							x : this.scale.calculateX(index),
 							y : this.scale.endPoint,
-							yUp : this.scale.endPoint,
-							yDown : this.scale.endPoint,
+							yCap : this.scale.endPoint,
 							width : this.options.pointDotRadius * this.options.errorStrokeWidth
 						})
 						point.errorBar.save();
@@ -312,18 +311,29 @@
 				//We can use this extra loop to calculate the control points of this dataset also in this loop
 
 				helpers.each(dataset.points, function(point, index){
-					if (point.hasValue()){
+					if (point.hasValue()) {
 						point.transition({
 							y : this.scale.calculateY(point.value),
 							x : this.scale.calculateX(index)
 						}, easingDecimal);
-						if (point.errorBar) point.errorBar.transition({
-							x : this.scale.calculateX(index),
-							y : this.scale.calculateY(point.value),
-							yUp : this.scale.calculateY(point.value + point.errorBar.errorVal),
-							yDown : this.scale.calculateY(point.value - point.errorBar.errorVal),
-							width : this.options.pointDotRadius * this.options.errorCapWidth
-						}, easingDecimal);
+						if (point.errorBar) {
+							if (this.errorDir !== 'down') {								
+								point.errorBar.transition({
+									x : this.scale.calculateX(index),
+									y : this.scale.calculateY(point.value),
+									yCap : this.scale.calculateY(point.value + point.errorBar.errorVal),
+									width : this.options.pointDotRadius * this.options.errorCapWidth
+								}, easingDecimal).draw();
+							}
+							if (this.errorDir !== 'up') {
+								point.errorBar.transition({
+									x : this.scale.calculateX(index),
+									y : this.scale.calculateY(point.value),
+									yCap : this.scale.calculateY(point.value - point.errorBar.errorVal),
+									width : this.options.pointDotRadius * this.options.errorCapWidth
+								}, easingDecimal).draw();
+							}
+						}
 					}
 				},this);
 
@@ -404,7 +414,6 @@
 				//A little inefficient double looping, but better than the line
 				//lagging behind the point positions
 				helpers.each(pointsWithValues,function(point){
-					if (point.errorBar) point.errorBar.draw();
 					point.draw();
 				});
 			},this);

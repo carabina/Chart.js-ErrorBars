@@ -34,7 +34,7 @@
 		//String - A legend template
 		legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>",
 
-		//String - direction of the error bars. "Up", "down", or "both"
+		//String - direction of the error bars. "up", "down", or "both"
 		errorDir : "both",
 
 		//Number - stroke width of the error bars
@@ -163,8 +163,7 @@
 					helpers.extend(bar.errorBar, {
 						x : this.scale.calculateBarX(this.datasets.length, datasetIndex, index),
 						y : this.scale.endPoint,
-						yDown : this.scale.endPoint,
-						yUp : this.scale.endPoint,
+						yCap : this.scale.endPoint,
 						width: this.scale.calculateBarWidth(this.datasets.length) * this.options.errorCapWidth
 					});
 					bar.errorBar.save();
@@ -302,8 +301,7 @@
 			helpers.extend(this.ErrorClass.prototype,{
 				y: this.scale.endPoint,
 				base : this.scale.endPoint,
-				yDown : this.scale.endPoint,
-				yUp : this.scale.endPoint
+				yCap : this.scale.endPoint
 			})
 			var newScaleProps = helpers.extend({
 				height : this.chart.height,
@@ -332,13 +330,22 @@
 						}, easingDecimal).draw();
 						if (bar.errorBar) {
 							bar.errorBar.base = this.scale.endPoint;
-							bar.errorBar.transition({
-								x : this.scale.calculateBarX(this.datasets.length, datasetIndex, index),
-								y : this.scale.calculateY(bar.value),
-								yDown : this.scale.calculateY(bar.value - bar.errorBar.errorVal),
-								yUp : this.scale.calculateY(bar.value + bar.errorBar.errorVal),
-								width: this.scale.calculateBarWidth(this.datasets.length) * this.options.errorCapWidth
-							}, easingDecimal).draw();
+							if (this.errorDir !== 'down') {
+								bar.errorBar.transition({
+									x : this.scale.calculateBarX(this.datasets.length, datasetIndex, index),
+									y : this.scale.calculateY(bar.value),
+									yCap : this.scale.calculateY(bar.value + bar.errorBar.errorVal),
+									width: this.scale.calculateBarWidth(this.datasets.length) * this.options.errorCapWidth
+								}, easingDecimal).draw();
+							}
+							if (this.errorDir !== 'up') {
+								bar.errorBar.transition({
+									x : this.scale.calculateBarX(this.datasets.length, datasetIndex, index),
+									y : this.scale.calculateY(bar.value),
+									yCap : this.scale.calculateY(bar.value - bar.errorBar.errorVal),
+									width: this.scale.calculateBarWidth(this.datasets.length) * this.options.errorCapWidth
+								}, easingDecimal).draw();
+							}
 						}
 					}
 				},this);

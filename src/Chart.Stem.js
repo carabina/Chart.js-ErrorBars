@@ -6,33 +6,19 @@
 				halfWidth = this.width/2,
 				leftX = this.x - halfWidth,
 				rightX = this.x + halfWidth,
-				top = this.base - (this.base - this.yUp),
-				bottom = this.base - (this.base - this.yDown),
-				middle = this.base - (this.base - this.y)
+				beginpoint = this.base - (this.base - this.y),
+				endpoint = this.base - (this.base - this.yCap)	
 			ctx.strokeStyle = this.errorStrokeColor;
 			ctx.lineWidth = this.errorStrokeWidth;
-			//draw upper error bar
-			if (this.errorDir != "down") {		
-				ctx.beginPath();
-				ctx.moveTo(this.x, middle);
-				ctx.lineTo(this.x, top);
-				ctx.stroke();
-				ctx.beginPath();
-				ctx.moveTo(leftX, top);
-				ctx.lineTo(rightX, top);
-				ctx.stroke();
-			}			
-			//draw lower error bar
-			if (this.errorDir != "up") {						
-				ctx.beginPath();
-				ctx.moveTo(this.x, middle);
-				ctx.lineTo(this.x, bottom);
-				ctx.stroke();
-				ctx.beginPath();
-				ctx.moveTo(leftX, bottom);
-				ctx.lineTo(rightX, bottom);
-				ctx.stroke();					
-			}
+			//draw upper error bar		
+			ctx.beginPath();
+			ctx.moveTo(this.x, beginpoint);
+			ctx.lineTo(this.x, endpoint);
+			ctx.stroke();
+			ctx.beginPath();
+			ctx.moveTo(leftX, endpoint);
+			ctx.lineTo(rightX, endpoint);
+			ctx.stroke();
 		}
 	})
 }).call(this);	
