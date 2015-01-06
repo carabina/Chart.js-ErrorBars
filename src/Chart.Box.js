@@ -46,7 +46,11 @@
 					min : data.datasets[datasetIndex].min[index],
 					q1 : data.datasets[datasetIndex].q1[index],
 					q3 : data.datasets[datasetIndex].q3[index],
-					max : data.datasets[datasetIndex].max[index]
+					max : data.datasets[datasetIndex].max[index],
+					lowerWhisker : new Chart.ErrorBar(),
+					lowerBox : new Chart.Rectangle(),
+					upperBox : new Chart.Rectangle(),
+					upperWhisker : new Chart.ErrorBar(),
 				});
 				bar.save();
 			}, this);
@@ -54,6 +58,7 @@
 		},
 		draw: function(ease) {
 			var easingDecimal = ease || 1;
+			var that = this;
 			this.clear();
 
 			var ctx = this.chart.ctx;
@@ -63,18 +68,15 @@
 			helpers.each(this.datasets,function(dataset,datasetIndex) {
 				helpers.each(dataset.bars,function(bar,index) {
 					if (bar.hasValue()) {
-						bar.transition({
+						bar.lowerWhisker.transition({
 							x : this.scale.calculateBarX(this.datasets.length, datasetIndex, index),
-							width : this.scale.calculateBarWidth(this.datasets.length)
-							yMin : this.scale.calculateY(bar.min),
-							yQ1 : this.scale.calculateY(bar.q1);
-							y : this.scale.calculateY(bar.value);
-							yQ3 : this.scale.calculateY(bar.q3);
-							yMax : this.scale.calculateY(bar.max);
+							width : this.scale.calculateBarWidth(this.datasets.length),
+							y : this.scale.calculateY(bar.q1),
+							yCap : this.scale.calculateY(bar.min)
 						}, easingDecimal).draw();
 					}
-				});
-			});
+				}, this);
+			}, this);
 		},
 	});
 
