@@ -40,6 +40,12 @@
 		initialize : function(data) {
 			this.options.showStroke = true;
 			Chart.types.Bar.prototype.initialize.apply(this, arguments);
+			this.BoxClass = Chart.Rectangle.extend({
+				
+			});
+			this.ErrorClass = Chart.ErrorBar.extend({
+
+			})
 			this.eachBars(function(bar, index, datasetIndex) {
 				helpers.extend(bar, {
 					errorBar : false,
@@ -47,10 +53,10 @@
 					q1 : data.datasets[datasetIndex].q1[index],
 					q3 : data.datasets[datasetIndex].q3[index],
 					max : data.datasets[datasetIndex].max[index],
-					lowerWhisker : new Chart.ErrorBar(),
-					lowerBox : new Chart.Rectangle(),
-					upperBox : new Chart.Rectangle(),
-					upperWhisker : new Chart.ErrorBar(),
+					lowerWhisker : new Chart.ErrorClass(),
+					lowerBox : new Chart.BoxClass(),
+					upperBox : new Chart.BoxClass(),
+					upperWhisker : new Chart.ErrorClass(),
 				});
 				bar.save();
 			}, this);
